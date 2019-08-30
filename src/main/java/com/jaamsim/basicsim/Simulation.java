@@ -652,19 +652,6 @@ public class Simulation extends Entity {
 			Unit.setPreferredUnitList(this.getJaamSimModel(), displayedUnits.getValue());
 			return;
 		}
-
-		// ****************************************************************************************
-
-		// GUI keywords that require an instance of GUIFrame
-		GUIListener gui = getJaamSimModel().getGUIListener();
-		if (gui == null)
-			return;
-
-		if (in == controlPanelWidth) {
-			int width = controlPanelWidth.getValue();
-			gui.setControlPanelWidth(width);
-			return;
-		}
 	}
 
 	@Override
@@ -1022,6 +1009,10 @@ public class Simulation extends Entity {
 			return;
 		KeywordIndex kw = InputAgent.formatIntegers(controlPanelWidth.getKeyword(), width);
 		InputAgent.storeAndExecute(new KeywordCommand(this, kw));
+	}
+
+	public int getControlPanelWidth() {
+		return controlPanelWidth.getValue();
 	}
 
 	public boolean isModelBuilderVisible() {
