@@ -1,6 +1,6 @@
 /*
  * JaamSim Discrete Event Simulation
- * Copyright (C) 2019 JaamSim Software Inc.
+ * Copyright (C) 2019-2020 JaamSim Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ public interface GUIListener {
 
 	public void handleInputError(Throwable t, Entity ent);
 	public void exit(int errorCode);
-	public void setControlPanelWidth(int width);
 	public void invokeErrorDialogBox(String title, String msg);
 	public void updateObjectSelector();
 	public void updateModelBuilder();
