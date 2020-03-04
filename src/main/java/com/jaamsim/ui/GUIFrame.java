@@ -439,7 +439,6 @@ public class GUIFrame extends OSFixJFrame implements EventTimeListener, GUIListe
 			RenderManager.inst().createWindow(activeView);
 
 		// Re-open the tools
-		showActiveTools();
 		updateUI();
 	}
 
