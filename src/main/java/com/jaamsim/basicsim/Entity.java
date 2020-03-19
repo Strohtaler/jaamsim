@@ -914,6 +914,34 @@ public class Entity {
 		observerList.add(ent);
 	}
 
+	/**
+	 * Notifies this entity that one or more of the entities on its watch list has changed state.
+	 */
+	public void observerUpdate() {}
+
+	/**
+	 * Notifies the entities that are watching this entity that a state change has occurred.
+	 */
+	public void notifyObservers() {
+		for (Entity ent : observerList) {
+			ent.scheduleObserverUpdate();
+		}
+	}
+
+	private void scheduleObserverUpdate() {
+		if (observerUpdateHandle.isScheduled())
+			return;
+		EventManager.scheduleTicks(0L, 11, false, observerUpdateTarget, observerUpdateHandle);
+	}
+
+	private final EventHandle observerUpdateHandle = new EventHandle();
+	private final ProcessTarget observerUpdateTarget = new EntityTarget<Entity>(this, "observerUpdate") {
+		@Override
+		public void process() {
+			ent.observerUpdate();
+		}
+	};
+
 	@Output(name = "Name",
 	 description = "The unique input name for this entity.",
 	    sequence = 0)
