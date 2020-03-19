@@ -264,6 +264,9 @@ public class Queue extends LinkedComponent {
 		if (!userUpdateHandle.isScheduled())
 			EventManager.scheduleTicks(0, 2, false, userUpdate, userUpdateHandle);
 
+		// Notify the entities that are watching this queue
+		notifyObservers();
+
 		// Schedule the time to check the renege condition
 		if (renegeTime.getValue() != null) {
 			double dur = renegeTime.getValue().getNextSample(getSimTime());
