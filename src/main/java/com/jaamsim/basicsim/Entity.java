@@ -1,7 +1,7 @@
 /*
  * JaamSim Discrete Event Simulation
  * Copyright (C) 2002-2011 Ausenco Engineering Canada Inc.
- * Copyright (C) 2016-2019 JaamSim Software Inc.
+ * Copyright (C) 2016-2020 JaamSim Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import com.jaamsim.events.ProcessTarget;
 import com.jaamsim.input.AttributeDefinitionListInput;
 import com.jaamsim.input.AttributeHandle;
 import com.jaamsim.input.BooleanInput;
+import com.jaamsim.input.EntityListInput;
 import com.jaamsim.input.ExpError;
 import com.jaamsim.input.ExpParser.Expression;
 import com.jaamsim.input.ExpResType;
@@ -128,6 +129,17 @@ public class Entity {
 	                        "{ FirstEnt 'size([Queue1].QueueList)>0 ? [Queue1].QueueList(1) : [SimEntity1]' }"})
 	public final NamedExpressionListInput namedExpressionInput;
 
+	@Keyword(description = "An optional list of objects to monitor. "
+	                     + "An update of this object will be performed whenever one its monitored "
+	                     + "objects changes state.\n\n"
+	                     + "For some types of objects, it is much more efficent to identify a "
+	                     + "specific set of objects to monitor than to use the default behaviour "
+	                     + "which is to perform an update whenever ANY object changes state. "
+	                     + "However, care must be taken to ensure that the list includes every "
+	                     + "object that can trigger this object.",
+	         exampleList = {"Object1  Object2"})
+	protected final EntityListInput<Entity> watchList;
+
 	{
 		desc = new StringInput("Description", KEY_INPUTS, "");
 		this.addInput(desc);
@@ -150,6 +162,11 @@ public class Entity {
 		namedExpressionInput.setHidden(false);
 		this.addInput(namedExpressionInput);
 
+		watchList = new EntityListInput<>(Entity.class, "WatchList", OPTIONS, new ArrayList<>());
+		watchList.setIncludeSelf(false);
+		watchList.setUnique(true);
+		watchList.setHidden(true);
+		this.addInput(watchList);
 	}
 
 	/**
