@@ -88,6 +88,8 @@ public class Entity {
 	private final HashMap<String, ExpressionHandle> customOutputMap = new LinkedHashMap<>();
 	private final HashMap<String, InOutHandle> inputOutputMap = new LinkedHashMap<>();
 
+	private final ArrayList<Entity> observerList = new ArrayList<>();
+
 	public static final String KEY_INPUTS = "Key Inputs";
 	public static final String OPTIONS = "Options";
 	public static final String GRAPHICS = "Graphics";
@@ -215,6 +217,9 @@ public class Entity {
 		for (AttributeHandle h : attributeMap.values()) {
 			h.setValue(h.getInitialValue());
 		}
+
+		// Clear the list of observers to notify
+		observerList.clear();
 	}
 
 	/**
@@ -222,7 +227,13 @@ public class Entity {
 	 * <p>
 	 * This method assumes other entities have already called earlyInit.
 	 */
-	public void lateInit() {}
+	public void lateInit() {
+
+		// Register this entity as an observer for its watched entities
+		for (Entity ent : getWatchList()) {
+			ent.registerObserver(this);
+		}
+	}
 
 	/**
 	 * Starts the execution of the model run for this entity.
@@ -893,6 +904,14 @@ public class Entity {
 
 	public ObjectType getObjectType() {
 		return simModel.getObjectTypeForClass(this.getClass());
+	}
+
+	protected ArrayList<Entity> getWatchList() {
+		return watchList.getValue();
+	}
+
+	private void registerObserver(Entity ent) {
+		observerList.add(ent);
 	}
 
 	@Output(name = "Name",
