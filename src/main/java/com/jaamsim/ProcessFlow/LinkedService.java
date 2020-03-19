@@ -59,6 +59,9 @@ public abstract class LinkedService extends LinkedDevice implements QueueUser {
 	private String matchValue;
 
 	{
+		watchList.setHidden(false);
+		watchList.addValidClass(Queue.class);
+
 		stateGraphics.setHidden(false);
 		workingStateListInput.setHidden(false);
 
