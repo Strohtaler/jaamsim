@@ -1,6 +1,6 @@
 /*
  * JaamSim Discrete Event Simulation
- * Copyright (C) 2016-2019 JaamSim Software Inc.
+ * Copyright (C) 2016-2020 JaamSim Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,12 @@ public abstract class Device extends StateUserEntity {
 		stepCompleted = true;
 		processing = false;
 		startUpTicks = -1L;
+	}
+
+	@Override
+	public void observerUpdate() {
+		super.observerUpdate();
+		restart();
 	}
 
 	/**
