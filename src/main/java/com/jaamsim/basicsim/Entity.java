@@ -203,6 +203,10 @@ public class Entity {
 		for (Input<?> in : inpList) {
 			in.validate();
 		}
+
+		if (this.isObserverOf(this))
+			throw new InputErrorException("The chain of WatchList inputs cannot include "
+					+ "this entity.");
 	}
 
 	/**
@@ -908,6 +912,14 @@ public class Entity {
 
 	protected ArrayList<Entity> getWatchList() {
 		return watchList.getValue();
+	}
+
+	private boolean isObserverOf(Entity subject) {
+		for (Entity ent : getWatchList()) {
+			if (ent == subject || ent.isObserverOf(subject))
+				return true;
+		}
+		return false;
 	}
 
 	private void registerObserver(Entity ent) {
